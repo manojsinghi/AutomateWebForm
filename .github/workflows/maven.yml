@@ -48,6 +48,9 @@ jobs:
         replace-with: '-'
         flags: 'g'
 
+    - name: Generate Deployment Package
+      run: zip -r deploy.zip *
+
     - name: Deploy to EB
       uses: einaregilsson/beanstalk-deploy@v20
       with:
@@ -57,3 +60,4 @@ jobs:
         environment_name: Dockerapp-env-3
         version_label: "docker-app-${{ steps.format-time.outputs.replaced }}"
         region: us-east-1
+        deployment_package: deploy.zip
