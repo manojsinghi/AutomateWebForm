@@ -60,3 +60,4 @@ jobs:
         environment_name: Dockerapp-env-2
         version_label: "docker-app-${{ steps.format-time.outputs.replaced }}"
         region: us-east-1
+        deployment_package: deploy.zip
