@@ -60,4 +60,3 @@ jobs:
         environment_name: Dockerapp-env
         version_label: latest
         region: us-east-1
-        deployment_package: deploy.zip
