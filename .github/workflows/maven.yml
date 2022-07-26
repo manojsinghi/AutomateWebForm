@@ -12,7 +12,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: macos-12
 
     steps:
     - uses: actions/checkout@v3
@@ -34,9 +34,6 @@ jobs:
         dockerfile: Dockerfile
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-
-    - name: Generate Deployment Package
-      run: zip -r deploy.zip *
 
     - name: Get timestamp
       uses: gerred/actions/current-time@master
@@ -60,4 +57,3 @@ jobs:
         environment_name: Dockerapp-env-3
         version_label: "docker-app-${{ steps.format-time.outputs.replaced }}"
         region: us-east-1
-        deployment_package: deploy.zip
