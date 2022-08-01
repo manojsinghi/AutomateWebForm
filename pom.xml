@@ -41,8 +41,14 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>src/main/java/</classpathPrefix>
+                            <mainClass>MyWebApplication</mainClass>
+                        </manifest>
+                    </archive>
+
                 </configuration>
             </plugin>
 
