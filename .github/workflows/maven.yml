@@ -25,15 +25,15 @@ jobs:
     - name: Build with Maven
       run:  mvn -B package -DskipTests --file pom.xml
 
-    - name: Build & push Docker image
-      uses: mr-smithers-excellent/docker-build-push@v5
-      with:
-        image: rock2manoj/springboot-new
-        tags: latest
-        registry: docker.io
-        dockerfile: Dockerfile
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+#    - name: Build & push Docker image
+#      uses: mr-smithers-excellent/docker-build-push@v5
+#      with:
+#        image: rock2manoj/springboot-new
+#        tags: latest
+#        registry: docker.io
+#        dockerfile: Dockerfile
+#        username: ${{ secrets.DOCKER_USERNAME }}
+#        password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Get timestamp
       uses: gerred/actions/current-time@master
@@ -48,6 +48,25 @@ jobs:
         replace-with: '-'
         flags: 'g'
 
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-south-1
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build, tag, and push image to Amazon ECR
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: hello_world
+        IMAGE_TAG: "hello-world-${{ steps.format-time.outputs.replaced }}"
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
     - name: Generate Deployment Package
       run: zip -r deploy.zip *
 
@@ -57,7 +76,7 @@ jobs:
         aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         application_name: docker-app
-        environment_name: Dockerapp-env-4
+        environment_name: Dockerapp-env-1
         version_label: "docker-app-${{ steps.format-time.outputs.replaced }}"
         region: us-east-1
         deployment_package: deploy.zip
