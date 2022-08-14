@@ -1,7 +1,7 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "rock2manoj/springboot-new:latest",
+    "Name": "619922200246.dkr.ecr.us-east-1.amazonaws.com/hello_world:hello-world-demo",
     "Update": "true"
   },
   "Ports": [
