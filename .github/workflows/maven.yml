@@ -63,9 +63,9 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: hello_world
-        IMAGE_TAG: "hello-world-${{ steps.format-time.outputs.replaced }}"
+        IMAGE_TAG: hello-world-demo
       run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
     - name: Generate Deployment Package
       run: zip -r deploy.zip *
